@@ -20,6 +20,8 @@ public final class Arena extends JavaPlugin implements Listener {
     Location spawnLocation;
     Location arenaLocation;
     ItemStack spawnMenuItem;
+    int ticks;
+    ArenaGame arenaGame;
 
     @Override
     public void onEnable() {
@@ -27,9 +29,11 @@ public final class Arena extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(this, this);
 
         this.spawnLocation = new Location(this.getServer().getWorld("world"), 0.5, 100, 0.5);
-        this.arenaLocation = new Location(this.getServer().getWorld("world"), 0.5, 105, 20);
+        this.arenaLocation = new Location(this.getServer().getWorld("world"), 0.5, 95, 20);
         this.spawnMenuItem = new ItemStack(Material.NETHER_STAR);
         this.setItemName(this.spawnMenuItem, "Start");
+        this.ticks = 0;
+        this.getServer().getScheduler().scheduleSyncRepeatingTask(this, this::onTick, 1, 1);
     }
 
     @EventHandler
@@ -49,6 +53,14 @@ public final class Arena extends JavaPlugin implements Listener {
         player.getInventory().setItem(0, this.spawnMenuItem);
     }
 
+    public void onTick(){
+        this.ticks += 1;
+        if (this.arenaGame != null){
+            this.arenaGame.onTick();
+        }
+//        this.broadcast(Integer.toString(this.ticks));
+    }
+
     @EventHandler
     public void onMenuPress(PlayerInteractEvent event){
         if (Objects.requireNonNull(event.getHand()).name().equals("HAND") && event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.NETHER_STAR)){
@@ -56,8 +68,9 @@ public final class Arena extends JavaPlugin implements Listener {
             Player player = event.getPlayer();
 
             player.teleport(this.arenaLocation);
-            player.getInventory().clear();
+//            player.getInventory().clear();
             player.setGameMode(GameMode.ADVENTURE);
+            this.arenaGame = new ArenaGame(this);
         }
     }
 
