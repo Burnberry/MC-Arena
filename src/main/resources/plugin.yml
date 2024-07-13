@@ -1,0 +1,7 @@
+name: Arena
+version: '${version}'
+main: noppe.minecraft.arena.arenaplugin.Arena
+api-version: '1.21'
+authors:
+  - Noppe
+description: Prototype Arena Fighter
