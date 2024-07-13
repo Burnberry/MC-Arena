@@ -1,6 +1,7 @@
 package noppe.minecraft.arena.arenaplugin;
 
 import net.kyori.adventure.text.Component;
+//import noppe.minecraft.arena.arenaplugin.ArenaGame;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,16 +21,29 @@ public final class Arena extends JavaPlugin implements Listener {
     Location spawnLocation;
     Location arenaLocation;
     ItemStack spawnMenuItem;
+    int sched;
+    int ticks = 0;
+
+//    ArenaGame arenaGame;
 
     @Override
     public void onEnable() {
         this.broadcast("Arena Plugin Enable");
-        getServer().getPluginManager().registerEvents(this, this);
 
         this.spawnLocation = new Location(this.getServer().getWorld("world"), 0.5, 100, 0.5);
         this.arenaLocation = new Location(this.getServer().getWorld("world"), 0.5, 105, 20);
         this.spawnMenuItem = new ItemStack(Material.NETHER_STAR);
         this.setItemName(this.spawnMenuItem, "Start");
+        if(!this.getServer().getScheduler().isCurrentlyRunning(sched)) {
+            sched = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, this::onTick, 1, 1);
+        }
+    }
+
+    public void onTick(){
+        ticks += 1;
+//        if (this.arenaGame != null){
+//            this.arenaGame.onTick();
+//        }
     }
 
     @EventHandler
@@ -58,6 +72,8 @@ public final class Arena extends JavaPlugin implements Listener {
             player.teleport(this.arenaLocation);
             player.getInventory().clear();
             player.setGameMode(GameMode.ADVENTURE);
+
+//            this.arenaGame = new ArenaGame(this);
         }
     }
 
