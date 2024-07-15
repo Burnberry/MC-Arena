@@ -19,19 +19,33 @@ import java.util.Objects;
 
 public final class Arena extends JavaPlugin implements Listener {
 
+    Boolean loaded;
+
     Location spawnLocation;
     Location arenaLocation;
     ItemStack spawnMenuItem;
     ItemStack removeWaveMenuItem;
     ItemStack stopGameMenuItem;
+    ItemStack weaponItem;
     int ticks;
     ArenaGame arenaGame;
 
     @Override
     public void onEnable() {
-        this.broadcast("Arena Plugin Enable");
-        getServer().getPluginManager().registerEvents(this, this);
+        this.loaded = false;
+        this.getServer().getPluginManager().registerEvents(this, this);
+    }
 
+    public void loadPlugin(){
+        if (!this.loaded){
+            this.reloadPlugin();
+        }
+    }
+
+    public void reloadPlugin(){
+        this.loaded = true;
+
+        System.out.println(this.getServer().getWorld("world").toString());
         this.spawnLocation = new Location(this.getServer().getWorld("world"), 0.5, 100, 0.5);
         this.arenaLocation = new Location(this.getServer().getWorld("world"), 0.5, 95, 20);
 
@@ -41,13 +55,18 @@ public final class Arena extends JavaPlugin implements Listener {
         this.setItemName(this.removeWaveMenuItem, "Remove Wave");
         this.stopGameMenuItem = new ItemStack(Material.RED_CANDLE);
         this.setItemName(this.stopGameMenuItem, "Stop Game");
+        this.weaponItem = new ItemStack(Material.DIAMOND_SWORD);
+        this.setItemName(this.weaponItem, "Knife");
 
-        this.ticks = 0;
         this.getServer().getScheduler().scheduleSyncRepeatingTask(this, this::onTick, 1, 1);
+        this.ticks = 0;
+
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
+        this.loadPlugin();
+
         Player player = event.getPlayer();
         this.broadcast(player.name().append(Component.text(" joined!")));
         player.teleport(this.spawnLocation);
@@ -76,12 +95,14 @@ public final class Arena extends JavaPlugin implements Listener {
     @EventHandler
     public void onMenuPress(PlayerInteractEvent event){
         if (Objects.requireNonNull(event.getHand()).name().equals("HAND") && event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.NETHER_STAR)){
-            this.broadcast(event.getPlayer().name().append(Component.text( " Is Starting A Game!")));
             Player player = event.getPlayer();
 
             player.teleport(this.arenaLocation);
-//            player.getInventory().clear();
-//            player.setGameMode(GameMode.ADVENTURE);
+            player.getInventory().clear();
+            player.getInventory().setItem(0, this.weaponItem);
+
+            player.setGameMode(GameMode.ADVENTURE);
+
             this.arenaGame = new ArenaGame(this);
         }
 
