@@ -9,6 +9,8 @@ public class Menu {
     public static ItemStack removeWave = Menu.createRemoveWave();
     public static ItemStack stopGame = Menu.createStopGame();
 
+    public static ItemStack startWave = Menu.createStartWave();
+
 
     static ItemStack createStartGame(){
         ItemStack itemStack = new ItemStack(Material.NETHER_STAR);
@@ -28,6 +30,13 @@ public class Menu {
         ItemStack itemStack = new ItemStack(Material.RED_CANDLE);
         M.setItemName(itemStack, "Stop Game");
         M.setLore(itemStack, "stopGame");
+        return itemStack;
+    }
+
+    static ItemStack createStartWave(){
+        ItemStack itemStack = new ItemStack(Material.FEATHER);
+        M.setItemName(itemStack, "Start Wave");
+        M.setLore(itemStack, "startWave");
         return itemStack;
     }
 }

@@ -4,13 +4,13 @@ import noppe.minecraft.arena.entities.Ent;
 import noppe.minecraft.arena.event.ArenaEventListener;
 import noppe.minecraft.arena.event.events.EventEntityRemove;
 import noppe.minecraft.arena.helpers.M;
-import noppe.minecraft.arena.mcarena.Arena;
+import noppe.minecraft.arena.mcarena.ArenaPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityRemoveEvent;
 
 public class MapperOnEntityRemove extends ArenaEventMapper implements Listener {
-    public MapperOnEntityRemove(Arena arena) {
+    public MapperOnEntityRemove(ArenaPlugin arena) {
         super(arena);
     }
 

@@ -1,11 +1,15 @@
 package noppe.minecraft.arena.helpers;
 
 import noppe.minecraft.arena.entities.Ent;
+import noppe.minecraft.arena.entities.Plyer;
 import noppe.minecraft.arena.event.ArenaEventListener;
-import noppe.minecraft.arena.mcarena.Arena;
+import noppe.minecraft.arena.mcarena.ArenaPlugin;
 import org.bukkit.Location;
+import org.bukkit.damage.DamageSource;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -15,10 +19,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class M {
-    public static Arena arena;
+    public static ArenaPlugin arenaPlugin;
 
     public static void setMetaData(Entity entity, String key, Object value){
-        entity.setMetadata(key, new FixedMetadataValue(M.arena, value));
+        entity.setMetadata(key, new FixedMetadataValue(M.arenaPlugin, value));
     }
 
     public static Object getMetaData(Entity entity, String key){
@@ -26,6 +30,10 @@ public class M {
             return null;
         }
         return entity.getMetadata(key).getFirst().value();
+    }
+
+    public static void setOrigin(Player player, ArenaEventListener origin) {
+        M.setMetaData(player, "origin", origin);
     }
 
     public static Ent getWrapper(Entity entity){
@@ -53,6 +61,7 @@ public class M {
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
         itemMeta.setLore(Arrays.asList(lore));
+//        itemMeta.setHideTooltip(true); // removes full tooltip
         item.setItemMeta(itemMeta);
     }
 
@@ -73,7 +82,22 @@ public class M {
         return (!M.getLore(item1).equals("Empty") && M.getLore(item1).equals(M.getLore(item2)));
     }
 
+    public static Plyer getPlayerFromDamageSource(Ent ent, EntityDeathEvent event){
+        DamageSource damageSource = event.getDamageSource();
+        if (damageSource != null){
+            Entity entity = damageSource.getCausingEntity();
+            if (entity != null){
+                Ent entKiller = M.getWrapper(entity);
+                if (entKiller.isPlayer()){
+                    return (Plyer) entKiller;
+                }
+            }
+        }
+        return null;
+    }
+
     public static void print(String message){
-        M.arena.print(message);
+        M.arenaPlugin.print(message);
+        System.out.println(message);
     }
 }

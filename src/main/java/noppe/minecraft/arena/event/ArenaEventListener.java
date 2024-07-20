@@ -12,4 +12,15 @@ public class ArenaEventListener {
     public void onEntityRemove(EntityRemoveEvent event, EventEntityRemove ev){}
     public void onPlayerInteract(PlayerInteractEvent event, EventPlayerInteract ev){}
 
+    public boolean isArena(){
+        return false;
+    }
+
+    public boolean isArenaGame(){
+        return false;
+    }
+
+    public boolean isArenaWave(){
+        return false;
+    }
 }

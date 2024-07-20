@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class EventPlayerInteract extends ArenaEvent{
     public ItemStack item;
-    Plyer plyer;
+    public Plyer plyer;
 
     public EventPlayerInteract(PlayerInteractEvent event) {
         super(event);

@@ -1,4 +1,4 @@
 name: Arena
 version: '${project.version}'
-main: noppe.minecraft.arena.mcarena.Arena
+main: noppe.minecraft.arena.mcarena.ArenaPlugin
 api-version: '1.21'

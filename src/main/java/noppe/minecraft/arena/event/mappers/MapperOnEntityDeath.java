@@ -4,14 +4,14 @@ import noppe.minecraft.arena.entities.Ent;
 import noppe.minecraft.arena.event.ArenaEventListener;
 import noppe.minecraft.arena.event.events.EventEntityDeath;
 import noppe.minecraft.arena.helpers.M;
-import noppe.minecraft.arena.mcarena.Arena;
+import noppe.minecraft.arena.mcarena.ArenaPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class MapperOnEntityDeath extends ArenaEventMapper implements Listener {
 
-    public MapperOnEntityDeath(Arena arena) {
+    public MapperOnEntityDeath(ArenaPlugin arena) {
         super(arena);
     }
 

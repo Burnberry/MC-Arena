@@ -1,12 +1,12 @@
 package noppe.minecraft.arena.event.mappers;
 
-import noppe.minecraft.arena.mcarena.Arena;
+import noppe.minecraft.arena.mcarena.ArenaPlugin;
 import org.bukkit.event.Listener;
 
 public class ArenaEventMapper implements Listener {
-    Arena arena;
+    ArenaPlugin arenaPlugin;
 
-    public ArenaEventMapper(Arena arena){
-        this.arena = arena;
+    public ArenaEventMapper(ArenaPlugin arenaPlugin){
+        this.arenaPlugin = arenaPlugin;
     }
 }

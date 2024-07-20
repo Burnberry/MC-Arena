@@ -1,18 +1,18 @@
 package noppe.minecraft.arena.mcarena;
 
 import noppe.minecraft.arena.entities.Enmy;
+import noppe.minecraft.arena.entities.Plyer;
 import noppe.minecraft.arena.entities.monsters.ArenaZombie;
 import noppe.minecraft.arena.event.ArenaEventListener;
 import noppe.minecraft.arena.event.events.EventEntityDeath;
 import noppe.minecraft.arena.event.events.EventEntityRemove;
+import noppe.minecraft.arena.helpers.M;
+import noppe.minecraft.arena.item.Gear;
+import noppe.minecraft.arena.location.Loc;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityRemoveEvent;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,30 +21,24 @@ public class ArenaWave extends ArenaEventListener {
     Arena arena;
     ArenaGame arenaGame;
 
-    Location waveLocation;
-    ItemStack weaponItem;
     int ticks;
-    List<Player> players;
+    List<Plyer> players;
     List<Enmy> monsters;
     int rounds;
     int roundSize;
 
     ArenaWave(ArenaGame arenaGame){
-        this.arenaGame=arenaGame;
+        this.arenaGame = arenaGame;
         this.arena = arenaGame.arena;
-
-        this.waveLocation = new Location(this.arena.getServer().getWorld("world"), 20.5, 100, 0.5);
-        this.weaponItem = new ItemStack(Material.DIAMOND_SWORD);
-        this.arena.setItemName(this.weaponItem, "Knife");
 
         this.ticks = 0;
         this.monsters = new ArrayList<>();
         this.players = this.arenaGame.players;
-        for (Player player: this.players){
-            player.teleport(this.waveLocation);
-            player.getInventory().clear();
-            player.getInventory().setItem(0, this.weaponItem);
-            player.setGameMode(GameMode.ADVENTURE);
+        for (Plyer plyer: this.players){
+            plyer.player.teleport(Loc.waveArena);
+            plyer.player.getInventory().clear();
+            plyer.player.getInventory().setItem(0, Gear.knife);
+            plyer.player.setGameMode(GameMode.ADVENTURE);
         }
         this.rounds = 2;
         this.roundSize = 3;
@@ -66,20 +60,6 @@ public class ArenaWave extends ArenaEventListener {
                 this.arenaGame.onWaveEnd();
             }
         }
-//        if (this.ticks%100 == 20){
-//            this.print("Spawning Enemy");
-//            this.spawnMonster();
-//        }
-    }
-
-
-    public void onMonsterRemoved(EntityRemoveEvent event){
-        Entity monster = event.getEntity();
-        this.removeMonster(monster);
-    }
-
-    private void removeMonster(Entity monster){
-        this.monsters.remove((Enmy) monster);
     }
 
     private void startRound(){
@@ -96,11 +76,7 @@ public class ArenaWave extends ArenaEventListener {
     }
 
     private Location getMonsterSpawnLocation(){
-        return this.waveLocation.clone().add(3, 0, 3);
-    }
-
-    public void print(String message){
-        this.arenaGame.print(message);
+        return Loc.waveArena.clone().add(3, 0, 3);
     }
 
     @Override
@@ -110,7 +86,14 @@ public class ArenaWave extends ArenaEventListener {
             if (this.monsters.contains(enemy)){
                 int souls = enemy.souls;
                 this.arenaGame.collectSouls(souls);
-                this.print(" killed + " + souls +  " souls | total: " + this.arenaGame.souls);
+                Plyer killer = ev.plyerKiller;
+                if (killer == null) {
+                    killer = this.getDefaultKiller();
+                }
+                if (killer != null){
+                    killer.souls += souls;
+                    M.print(killer.getName() + " killed " + enemy.enemy.getName() + " + " + souls +  " souls | total: " + killer.souls);
+                }
             }
         }
     }
@@ -121,5 +104,16 @@ public class ArenaWave extends ArenaEventListener {
             Enmy enmy = (Enmy) ev.ent;
             this.monsters.remove(enmy);
         }
+    }
+
+    public Plyer getDefaultKiller(){
+        if (!this.players.isEmpty()){
+            return this.players.getFirst();
+        }
+        return null;
+    }
+
+    public boolean isArenaWave(){
+        return true;
     }
 }

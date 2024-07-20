@@ -1,64 +1,72 @@
 package noppe.minecraft.arena.mcarena;
 
-import noppe.minecraft.arena.event.ArenaEventHandler;
-import noppe.minecraft.arena.event.events.EventEntityDeath;
+import noppe.minecraft.arena.entities.Plyer;
+import noppe.minecraft.arena.event.ArenaEventListener;
+import noppe.minecraft.arena.event.events.EventPlayerInteract;
+import noppe.minecraft.arena.event.events.EventPlayerJoin;
 import noppe.minecraft.arena.helpers.M;
 import noppe.minecraft.arena.item.Menu;
+import noppe.minecraft.arena.location.Loc;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityRemoveEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
-public final class Arena extends JavaPlugin implements Listener {
-
-    ArenaEventHandler arenaEventHandler;
-
-    Location spawnLocation;
-    ItemStack spawnMenuItem;
-    ItemStack removeWaveMenuItem;
-    ItemStack stopGameMenuItem;
+public class Arena extends ArenaEventListener {
+    public ArenaPlugin arenaPlugin;
+    public ArenaGame arenaGame;
     int ticks;
-    ArenaGame arenaGame;
+    public List<Plyer> players;
+
+    public Arena(ArenaPlugin arenaPlugin){
+        this.arenaPlugin = arenaPlugin;
+        this.arenaPlugin.getServer().getScheduler().scheduleSyncRepeatingTask(this.arenaPlugin, this::onTick, 1, 1);
+    }
+
+    public void load(){
+        Loc.setArena(this);
+
+        this.ticks = 0;
+        this.players = new ArrayList<>();
+        for (Player player: this.arenaPlugin.getServer().getOnlinePlayers()){
+            this.onNewPlayer(player);
+        }
+    }
+
+    public void onTick(){
+        this.ticks += 1;
+        if (this.arenaGame != null){
+            this.arenaGame.onTick();
+        }
+    }
 
     @Override
-    public void onEnable() {
-        this.arenaEventHandler = new ArenaEventHandler(this);
-        this.reloadPlugin();
-        this.arenaEventHandler.registerEvents();
-        this.getServer().getPluginManager().registerEvents(this, this);
+    public void onPlayerInteract(PlayerInteractEvent event, EventPlayerInteract ev){
+        if (M.matches(ev.item, Menu.StartGame)){
+            if (this.arenaGame == null){
+                this.arenaGame = new ArenaGame(this);
+            }
+            this.arenaGame.onPlayerJoin(ev.plyer);
+        }
+
+        if (this.arenaGame != null){
+            this.arenaGame.onPlayerInteract(event, ev);
+        }
     }
 
-
-    public void reloadPlugin(){
-        M.arena = this;
-
-        this.spawnLocation = new Location(this.getServer().getWorld("world"), 0.5, 100, 0.5);
-
-        this.spawnMenuItem = Menu.StartGame;
-        this.removeWaveMenuItem = Menu.removeWave;
-        this.stopGameMenuItem = Menu.stopGame;
-
-        this.getServer().getScheduler().scheduleSyncRepeatingTask(this, this::onTick, 1, 1);
-        this.ticks = 0;
-
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event){
+    public void onPlayerJoin(PlayerJoinEvent event, EventPlayerJoin ev){
         Player player = event.getPlayer();
-        this.print(player.getName()+" joined!");
-        player.teleport(this.spawnLocation);
+        M.print(player.getName()+" joined!");
+        this.onNewPlayer(player);
+    }
+
+    public void onNewPlayer(Player player){
+        this.players.add(new Plyer(this, player));
+
+        player.teleport(Loc.spawn);
 
         if (player.getName().equals("Noppe")) {
             player.setGameMode(GameMode.CREATIVE);
@@ -68,43 +76,12 @@ public final class Arena extends JavaPlugin implements Listener {
         }
 
         player.getInventory().clear();
-        player.getInventory().setItem(0, this.spawnMenuItem);
-        player.getInventory().setItem(1, this.removeWaveMenuItem);
-        player.getInventory().setItem(2, this.stopGameMenuItem);
+        player.getInventory().setItem(0, Menu.StartGame);
+        player.getInventory().setItem(1, Menu.removeWave);
+        player.getInventory().setItem(2, Menu.stopGame);
     }
 
-    public void onTick(){
-        this.ticks += 1;
-        if (this.arenaGame != null){
-            this.arenaGame.onTick();
-        }
-//        this.broadcast(Integer.toString(this.ticks));
-    }
-
-    @EventHandler
-    public void onMenuPress(PlayerInteractEvent event){
-        if (Objects.requireNonNull(event.getHand()).name().equals("HAND") && event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.NETHER_STAR)){
-            if (this.arenaGame == null){
-                this.arenaGame = new ArenaGame(this);
-            }
-            this.arenaGame.onPlayerJoin(event.getPlayer());
-        }
-
-        if (Objects.requireNonNull(event.getHand()).name().equals("HAND") && this.arenaGame != null){
-            this.arenaGame.onMenuPress(event);
-        }
-    }
-
-    public void print(String message){
-        this.getServer().broadcastMessage(message);
-        System.out.println(message);
-    }
-
-    public void setItemName(ItemStack item, String name){
-        ItemMeta meta = item.getItemMeta();
-        assert meta != null;
-        meta.setDisplayName(name);
-        item.setItemMeta(meta);
+    public boolean isArena(){
+        return true;
     }
 }
-
