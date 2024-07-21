@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.Inventory;
@@ -18,7 +17,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class M {
     public static ArenaPlugin arenaPlugin;
@@ -46,8 +44,8 @@ public class M {
         return (ArenaEventListener) M.getMetaData(entity, "origin");
     }
 
-    public static Entity spawnEntity(Object origin, Location location, EntityType entityType){
-        Entity entity = Objects.requireNonNull(location.getWorld()).spawnEntity(location, entityType);
+    public static Entity spawnEntity(Object origin, Location location, Class clazz){
+        Entity entity = M.getWorld().spawn(location, clazz, false, null);
         M.setMetaData(entity, "origin", origin);
         return entity;
     }
