@@ -2,6 +2,7 @@ package noppe.minecraft.arena.mcarena;
 
 import noppe.minecraft.arena.entities.Plyer;
 import noppe.minecraft.arena.event.ArenaEventListener;
+import noppe.minecraft.arena.event.events.EventInventoryClick;
 import noppe.minecraft.arena.event.events.EventPlayerInteract;
 import noppe.minecraft.arena.event.events.EventPlayerJoin;
 import noppe.minecraft.arena.helpers.M;
@@ -10,6 +11,7 @@ import noppe.minecraft.arena.item.Menu;
 import noppe.minecraft.arena.location.Loc;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -80,6 +82,15 @@ public class Arena extends ArenaEventListener {
         }
 
         M.setInventory(player, Inv.lobby);
+    }
+
+    @Override
+    public void onInventoryClick(InventoryClickEvent event, EventInventoryClick ev){
+        if (ev.itemClicked == null || this.arenaGame == null){
+            return;
+        } else {
+            this.arenaGame.onInventoryClick(event, ev);
+        }
     }
 
     public boolean isArena(){

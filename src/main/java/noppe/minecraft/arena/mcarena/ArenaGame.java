@@ -2,12 +2,16 @@ package noppe.minecraft.arena.mcarena;
 
 import noppe.minecraft.arena.entities.Plyer;
 import noppe.minecraft.arena.event.ArenaEventListener;
+import noppe.minecraft.arena.event.events.EventInventoryClick;
 import noppe.minecraft.arena.event.events.EventPlayerInteract;
 import noppe.minecraft.arena.helpers.M;
 import noppe.minecraft.arena.item.Inv;
+import noppe.minecraft.arena.item.InvView;
 import noppe.minecraft.arena.item.Menu;
+import noppe.minecraft.arena.item.Upgr;
 import noppe.minecraft.arena.location.Loc;
 import org.bukkit.GameMode;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
@@ -94,7 +98,20 @@ public class ArenaGame extends ArenaEventListener {
         else if (M.matches(ev.item, Menu.startWave)){
             this.startWave();
         }
+        else if (M.matches(ev.item, Menu.soulShop)){
+            ev.plyer.player.openInventory(InvView.getSoulShop(ev.plyer));
+        }
     }
+
+    @Override
+    public void onInventoryClick(InventoryClickEvent event, EventInventoryClick ev){
+        if (ev.itemClicked == null){
+            return;
+        } else if (M.matches(ev.itemClicked, Upgr.getHealthIncrease(ev.plyer))) {
+            ev.plyer.buyHealthIncrease();
+        }
+    }
+
 
     public void collectSouls(int souls){
         this.souls += souls;

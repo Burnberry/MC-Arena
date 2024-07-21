@@ -9,7 +9,7 @@ public class Inv {
     public static Inventory game = Inv.createGame();
 
     static Inventory createLobby(){
-        Inventory inventory = Bukkit.createInventory(null, InventoryType.PLAYER);
+        Inventory inventory = Bukkit.createInventory(null, InventoryType.PLAYER, "Inventory");
         inventory.setItem(0, Menu.StartGame);
         inventory.setItem(1, Menu.removeWave);
         inventory.setItem(2, Menu.stopGame);
@@ -17,7 +17,7 @@ public class Inv {
     }
 
     static Inventory createGame(){
-        Inventory inventory = Bukkit.createInventory(null, InventoryType.PLAYER);
+        Inventory inventory = Bukkit.createInventory(null, InventoryType.PLAYER, "Inventory");
         inventory.setItem(0, Gear.knife);
         inventory.setItem(4, Menu.soulShop);
         inventory.setItem(8, Menu.startWave);

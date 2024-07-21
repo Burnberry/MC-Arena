@@ -14,8 +14,16 @@ public class ArenaEventHandler {
         this.arena = arena;
         this.arenaEventMappers = new ArrayList<>();
 
+//        this.arenaEventMappers.add(new MapperOnTest(this.arena));
+
+        // player events
         this.arenaEventMappers.add(new MapperOnPlayerJoin(this.arena));
         this.arenaEventMappers.add(new MapperOnPlayerInteract(this.arena));
+
+        // inventory events
+        this.arenaEventMappers.add(new MapperOnInventoryClick(this.arena));
+
+        // entity events
         this.arenaEventMappers.add(new MapperOnEntityDeath(this.arena));
         this.arenaEventMappers.add(new MapperOnEntityRemove(this.arena));
 
