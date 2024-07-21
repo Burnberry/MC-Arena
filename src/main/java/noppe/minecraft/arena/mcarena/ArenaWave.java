@@ -7,7 +7,6 @@ import noppe.minecraft.arena.event.ArenaEventListener;
 import noppe.minecraft.arena.event.events.EventEntityDeath;
 import noppe.minecraft.arena.event.events.EventEntityRemove;
 import noppe.minecraft.arena.helpers.M;
-import noppe.minecraft.arena.item.Inv;
 import noppe.minecraft.arena.location.Loc;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -36,7 +35,7 @@ public class ArenaWave extends ArenaEventListener {
         this.players = this.arenaGame.players;
         for (Plyer plyer: this.players){
             plyer.player.teleport(Loc.waveArena);
-            M.setInventory(plyer, Inv.defaultArenaKit);
+//            M.setInventory(plyer, Inv.defaultArenaKit);
             plyer.player.setGameMode(GameMode.ADVENTURE);
         }
         this.rounds = 2;

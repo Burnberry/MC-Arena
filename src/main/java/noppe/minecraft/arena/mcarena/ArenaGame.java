@@ -65,6 +65,9 @@ public class ArenaGame extends ArenaEventListener {
     }
 
     public void startWave(){
+        if (this.arenaWave != null){
+            return;
+        }
         M.print("starting wave");
         this.arenaWave = new ArenaWave(this);
     }
