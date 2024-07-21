@@ -34,6 +34,12 @@ public class Plyer extends Ent{
         this.player.setSaturation(20);
     }
 
+    public void heal(double health){
+        health += this.player.getHealth();
+        health = Math.min(health, this.getMaxHealth());
+        this.player.setHealth(health);
+    }
+
     public Boolean isPlayer(){
         return true;
     }
