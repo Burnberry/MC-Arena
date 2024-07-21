@@ -10,6 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -67,7 +68,9 @@ public class M {
 
     public static String getLore(ItemStack item){
         ItemMeta itemMeta = item.getItemMeta();
-        assert itemMeta != null;
+        if (itemMeta == null){
+            return "Empty";
+        }
         List<String> lore = itemMeta.getLore();
         if (lore == null){
             return "Empty";
@@ -94,6 +97,14 @@ public class M {
             }
         }
         return null;
+    }
+
+    public static void setInventory(Player player, Inventory inventory){
+        player.getInventory().setContents(inventory.getContents());
+    }
+
+    public static void setInventory(Plyer plyer, Inventory inventory){
+        M.setInventory(plyer.player, inventory);
     }
 
     public static void print(String message){

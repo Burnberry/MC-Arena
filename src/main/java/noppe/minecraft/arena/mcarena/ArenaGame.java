@@ -4,6 +4,7 @@ import noppe.minecraft.arena.entities.Plyer;
 import noppe.minecraft.arena.event.ArenaEventListener;
 import noppe.minecraft.arena.event.events.EventPlayerInteract;
 import noppe.minecraft.arena.helpers.M;
+import noppe.minecraft.arena.item.Inv;
 import noppe.minecraft.arena.item.Menu;
 import noppe.minecraft.arena.location.Loc;
 import org.bukkit.GameMode;
@@ -54,8 +55,7 @@ public class ArenaGame extends ArenaEventListener {
 
     public void onPlayerTeleport(Plyer plyer){
         plyer.player.teleport(Loc.arenaLobby);
-        plyer.player.getInventory().clear();
-        plyer.player.getInventory().setItem(5, Menu.startWave);
+        M.setInventory(plyer, Inv.game);
         plyer.player.setGameMode(GameMode.ADVENTURE);
     }
 

@@ -5,6 +5,7 @@ import noppe.minecraft.arena.event.ArenaEventListener;
 import noppe.minecraft.arena.event.events.EventPlayerInteract;
 import noppe.minecraft.arena.event.events.EventPlayerJoin;
 import noppe.minecraft.arena.helpers.M;
+import noppe.minecraft.arena.item.Inv;
 import noppe.minecraft.arena.item.Menu;
 import noppe.minecraft.arena.location.Loc;
 import org.bukkit.GameMode;
@@ -75,10 +76,7 @@ public class Arena extends ArenaEventListener {
             player.setGameMode(GameMode.ADVENTURE);
         }
 
-        player.getInventory().clear();
-        player.getInventory().setItem(0, Menu.StartGame);
-        player.getInventory().setItem(1, Menu.removeWave);
-        player.getInventory().setItem(2, Menu.stopGame);
+        M.setInventory(player, Inv.lobby);
     }
 
     public boolean isArena(){
