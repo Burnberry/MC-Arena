@@ -15,6 +15,7 @@ public class ArenaEventHandler {
         this.arenaEventMappers = new ArrayList<>();
 
 //        this.arenaEventMappers.add(new MapperOnTest(this.arena));
+        this.arenaEventMappers.add(new DisableEvents(this.arena));
 
         // player events
         this.arenaEventMappers.add(new MapperOnPlayerJoin(this.arena));

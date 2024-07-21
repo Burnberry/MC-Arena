@@ -24,7 +24,14 @@ public class Plyer extends Ent{
         // upgrades
         this.healthIncreaseLevel = 0;
 
+        this.fullHeal();
+    }
+
+    public void fullHeal(){
         this.updateMaxHealth();
+        this.player.setHealth(this.getMaxHealth());
+        this.player.setFoodLevel(20);
+        this.player.setSaturation(20);
     }
 
     public Boolean isPlayer(){
@@ -41,6 +48,10 @@ public class Plyer extends Ent{
 
     void updateMaxHealth(){
         Objects.requireNonNull(this.player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(this.healthIncreaseLevel*2+20);
+    }
+
+    public double getMaxHealth(){
+        return Objects.requireNonNull(this.player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue();
     }
 
     public int getHealthIncreaseCost(){
