@@ -5,6 +5,7 @@ import noppe.minecraft.arena.entities.Plyer;
 import noppe.minecraft.arena.event.ArenaEventListener;
 import noppe.minecraft.arena.mcarena.ArenaPlugin;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -105,6 +106,10 @@ public class M {
 
     public static void setInventory(Plyer plyer, Inventory inventory){
         M.setInventory(plyer.player, inventory);
+    }
+
+    public static World getWorld(){
+        return M.arenaPlugin.getServer().getWorld("world");
     }
 
     public static void print(String message){
