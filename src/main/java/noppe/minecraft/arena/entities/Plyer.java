@@ -10,6 +10,8 @@ import java.util.Objects;
 public class Plyer extends Ent{
     public Player player;
     public int souls;
+    private final int menuUseCooldown = 5;
+    public int lastMenuUseTime = -menuUseCooldown;
 
     // upgrades
     int healthIncreaseLevel;
@@ -25,6 +27,15 @@ public class Plyer extends Ent{
         this.healthIncreaseLevel = 0;
 
         this.fullHeal();
+    }
+
+    public boolean useMenu(){
+        if (this.lastMenuUseTime + this.menuUseCooldown <= M.getTicks()){
+            this.lastMenuUseTime = M.getTicks();
+            return true;
+        }
+        M.print("Wait before using a menu again");
+        return false;
     }
 
     public void fullHeal(){

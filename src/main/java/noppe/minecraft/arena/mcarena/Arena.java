@@ -21,7 +21,7 @@ import java.util.List;
 public class Arena extends ArenaEventListener {
     public ArenaPlugin arenaPlugin;
     public ArenaGame arenaGame;
-    int ticks;
+    public int ticks;
     public List<Plyer> players;
 
     public Arena(ArenaPlugin arenaPlugin){
@@ -51,7 +51,7 @@ public class Arena extends ArenaEventListener {
         if (!ev.rightClick){
             return;
         }
-        if (M.matches(ev.item, Menu.StartGame)){
+        if (M.matches(ev.item, Menu.StartGame) && ev.plyer.useMenu()){
             if (this.arenaGame == null){
                 this.arenaGame = new ArenaGame(this);
             }

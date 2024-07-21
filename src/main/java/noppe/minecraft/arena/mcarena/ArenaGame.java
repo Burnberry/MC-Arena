@@ -89,16 +89,16 @@ public class ArenaGame extends ArenaEventListener {
             return;
         }
 
-        if (M.matches(ev.item, Menu.removeWave) && this.arenaWave != null){
+        if (M.matches(ev.item, Menu.removeWave) && this.arenaWave != null && ev.plyer.useMenu()){
             this.arenaWave.onRemove();
         }
-        else if (M.matches(ev.item, Menu.stopGame)){
+        else if (M.matches(ev.item, Menu.stopGame) && ev.plyer.useMenu()){
             this.onRemove();
         }
-        else if (M.matches(ev.item, Menu.startWave)){
+        else if (M.matches(ev.item, Menu.startWave) && ev.plyer.useMenu()){
             this.startWave();
         }
-        else if (M.matches(ev.item, Menu.soulShop)){
+        else if (M.matches(ev.item, Menu.soulShop) && ev.plyer.useMenu()){
             ev.plyer.player.openInventory(InvView.getSoulShop(ev.plyer));
         }
     }

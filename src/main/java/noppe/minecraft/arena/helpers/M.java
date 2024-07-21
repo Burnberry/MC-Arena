@@ -110,6 +110,10 @@ public class M {
         return M.arenaPlugin.getServer().getWorld("world");
     }
 
+    public static int getTicks(){
+        return M.arenaPlugin.arena.ticks;
+    }
+
     public static void print(String message){
         M.arenaPlugin.print(message);
         System.out.println(message);
