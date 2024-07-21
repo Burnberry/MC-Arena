@@ -6,6 +6,7 @@ import noppe.minecraft.arena.event.ArenaEventListener;
 import noppe.minecraft.arena.mcarena.ArenaPlugin;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -24,6 +25,9 @@ public class M {
     public static void setMetaData(Entity entity, String key, Object value){
         entity.setMetadata(key, new FixedMetadataValue(M.arenaPlugin, value));
     }
+    public static void setMetaData(Block block, String key, Object value){
+        block.setMetadata(key, new FixedMetadataValue(M.arenaPlugin, value));
+    }
 
     public static Object getMetaData(Entity entity, String key){
         if (entity.getMetadata(key).isEmpty()){
@@ -32,12 +36,23 @@ public class M {
         return entity.getMetadata(key).getFirst().value();
     }
 
+    public static Object getMetaData(Block block, String key){
+        if (block.getMetadata(key).isEmpty()){
+            return null;
+        }
+        return block.getMetadata(key).getFirst().value();
+    }
+
     public static void setOrigin(Player player, ArenaEventListener origin) {
         M.setMetaData(player, "origin", origin);
     }
 
     public static Ent getWrapper(Entity entity){
         return (Ent) M.getMetaData(entity, "wrapper");
+    }
+
+    public static Ent getWrapper(Block block){
+        return (Ent) M.getMetaData(block, "wrapper");
     }
 
     public static ArenaEventListener getOrigin(Entity entity){

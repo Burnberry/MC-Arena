@@ -2,6 +2,8 @@ package noppe.minecraft.arena.entities;
 
 import noppe.minecraft.arena.event.ArenaEventListener;
 import noppe.minecraft.arena.helpers.M;
+import noppe.minecraft.arena.location.Loc;
+import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 
@@ -10,7 +12,7 @@ import java.util.Objects;
 public class Plyer extends Ent{
     public Player player;
     public int souls;
-    private final int menuUseCooldown = 5;
+    private final int menuUseCooldown = 10;
     public int lastMenuUseTime = -menuUseCooldown;
 
     // upgrades
@@ -27,6 +29,7 @@ public class Plyer extends Ent{
         this.healthIncreaseLevel = 0;
 
         this.fullHeal();
+        this.setRespawnLocation(Loc.spawn);
     }
 
     public boolean useMenu(){
@@ -87,5 +90,9 @@ public class Plyer extends Ent{
     void upgradeHealthIncrease(){
         this.healthIncreaseLevel += 1;
         this.updateMaxHealth();
+    }
+
+    public void setRespawnLocation(Location location){
+        this.player.setRespawnLocation(location);
     }
 }

@@ -1,5 +1,6 @@
 package noppe.minecraft.arena.mcarena;
 
+import noppe.minecraft.arena.builder.Bld;
 import noppe.minecraft.arena.entities.Plyer;
 import noppe.minecraft.arena.event.ArenaEventListener;
 import noppe.minecraft.arena.event.events.EventInventoryClick;
@@ -10,6 +11,7 @@ import noppe.minecraft.arena.item.Inv;
 import noppe.minecraft.arena.item.Menu;
 import noppe.minecraft.arena.location.Loc;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -31,6 +33,8 @@ public class Arena extends ArenaEventListener {
 
     public void load(){
         Loc.setArena(this);
+
+        Bld.boxHome(Loc.spawn, Material.STONE_BRICKS, Material.BLACK_STAINED_GLASS, Material.AIR, 5, 5, 3);
 
         this.ticks = 0;
         this.players = new ArrayList<>();
@@ -56,6 +60,10 @@ public class Arena extends ArenaEventListener {
                 this.arenaGame = new ArenaGame(this);
             }
             this.arenaGame.onPlayerJoin(ev.plyer);
+        } else if (M.matches(ev.item, Menu.build) && ev.plyer.useMenu()) {
+            Bld.test(ev.plyer.player.getLocation().clone().add(0, -1, 0), Material.STONE);
+        } else if (M.matches(ev.item, Menu.erase) && ev.plyer.useMenu()) {
+            Bld.test(ev.plyer.player.getLocation().clone().add(0, -1, 0), Material.AIR);
         }
 
         if (this.arenaGame != null){

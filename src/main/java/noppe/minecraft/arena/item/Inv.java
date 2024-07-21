@@ -11,8 +11,10 @@ public class Inv {
     static Inventory createLobby(){
         Inventory inventory = Bukkit.createInventory(null, InventoryType.PLAYER, "Inventory");
         inventory.setItem(0, Menu.StartGame);
-        inventory.setItem(1, Menu.removeWave);
-        inventory.setItem(2, Menu.stopGame);
+        inventory.setItem(2, Menu.removeWave);
+        inventory.setItem(3, Menu.stopGame);
+        inventory.setItem(5, Menu.build);
+        inventory.setItem(6, Menu.erase);
         return inventory;
     }
 

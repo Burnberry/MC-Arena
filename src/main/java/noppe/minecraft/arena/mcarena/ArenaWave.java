@@ -1,5 +1,6 @@
 package noppe.minecraft.arena.mcarena;
 
+import noppe.minecraft.arena.builder.Bld;
 import noppe.minecraft.arena.entities.Enmy;
 import noppe.minecraft.arena.entities.Plyer;
 import noppe.minecraft.arena.entities.monsters.ArenaZombie;
@@ -10,6 +11,7 @@ import noppe.minecraft.arena.helpers.M;
 import noppe.minecraft.arena.location.Loc;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityRemoveEvent;
 
@@ -29,6 +31,8 @@ public class ArenaWave extends ArenaEventListener {
     ArenaWave(ArenaGame arenaGame){
         this.arenaGame = arenaGame;
         this.arena = arenaGame.arena;
+        Bld.boxHome(Loc.waveArena, Material.GILDED_BLACKSTONE, Material.BLACK_STAINED_GLASS, Material.TINTED_GLASS, 8, 8, 3);
+
 
         this.ticks = 0;
         this.monsters = new ArrayList<>();
