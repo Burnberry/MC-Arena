@@ -54,6 +54,7 @@ public class ArenaGame extends ArenaEventListener {
     }
 
     public void onPlayerTeleport(Plyer plyer){
+//        M.setOrigin(plyer.player, this);
         plyer.player.teleport(Loc.arenaLobby);
         M.setInventory(plyer, Inv.game);
         plyer.player.setGameMode(GameMode.ADVENTURE);
@@ -77,6 +78,10 @@ public class ArenaGame extends ArenaEventListener {
     }
 
     public void onPlayerInteract(PlayerInteractEvent event, EventPlayerInteract ev){
+        if (!ev.rightClick){
+            return;
+        }
+
         if (M.matches(ev.item, Menu.removeWave) && this.arenaWave != null){
             this.arenaWave.onRemove();
         }

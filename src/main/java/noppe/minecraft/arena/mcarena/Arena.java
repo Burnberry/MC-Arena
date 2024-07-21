@@ -46,6 +46,9 @@ public class Arena extends ArenaEventListener {
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, EventPlayerInteract ev){
+        if (!ev.rightClick){
+            return;
+        }
         if (M.matches(ev.item, Menu.StartGame)){
             if (this.arenaGame == null){
                 this.arenaGame = new ArenaGame(this);
