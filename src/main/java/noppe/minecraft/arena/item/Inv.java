@@ -15,6 +15,7 @@ public class Inv {
         inventory.setItem(3, Menu.stopGame);
         inventory.setItem(5, Menu.build);
         inventory.setItem(6, Menu.erase);
+        inventory.setItem(8, Menu.staff);
         return inventory;
     }
 

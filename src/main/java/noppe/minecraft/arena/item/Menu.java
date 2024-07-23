@@ -15,6 +15,8 @@ public class Menu {
     public static ItemStack build = Menu.createBuild();
     public static ItemStack erase = Menu.createErase();
 
+    public static ItemStack staff = Menu.createStaff();
+
 
     static ItemStack createStartGame(){
         ItemStack itemStack = new ItemStack(Material.NETHER_STAR);
@@ -59,9 +61,16 @@ public class Menu {
     }
 
     static ItemStack createErase(){
-        ItemStack itemStack = new ItemStack(Material.MACE);
+        ItemStack itemStack = new ItemStack(Material.STONE_SHOVEL);
         M.setItemName(itemStack, "Erase");
         M.setLore(itemStack, "Erase");
+        return itemStack;
+    }
+
+    static ItemStack createStaff(){
+        ItemStack itemStack = new ItemStack(Material.MACE);
+        M.setItemName(itemStack, "Staff");
+        M.setLore(itemStack, "Staff");
         return itemStack;
     }
 }

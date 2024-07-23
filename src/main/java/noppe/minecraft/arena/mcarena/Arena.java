@@ -10,8 +10,11 @@ import noppe.minecraft.arena.helpers.M;
 import noppe.minecraft.arena.item.Inv;
 import noppe.minecraft.arena.item.Menu;
 import noppe.minecraft.arena.location.Loc;
+import noppe.minecraft.arena.spell.SpellCast;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -25,6 +28,7 @@ public class Arena extends ArenaEventListener {
     public ArenaGame arenaGame;
     public int ticks;
     public List<Plyer> players;
+    public SpellCast spellCast;
 
     public Arena(ArenaPlugin arenaPlugin){
         this.arenaPlugin = arenaPlugin;
@@ -48,11 +52,15 @@ public class Arena extends ArenaEventListener {
         if (this.arenaGame != null){
             this.arenaGame.onTick();
         }
+        if (this.spellCast != null){
+            this.spellCast.onTick();
+        }
     }
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, EventPlayerInteract ev){
         if (!ev.rightClick){
+            this.spellCast = null;
             return;
         }
         if (M.matches(ev.item, Menu.StartGame) && ev.plyer.useMenu()){
@@ -64,6 +72,11 @@ public class Arena extends ArenaEventListener {
             Bld.test(ev.plyer.player.getLocation().clone().add(0, -1, 0), Material.STONE);
         } else if (M.matches(ev.item, Menu.erase) && ev.plyer.useMenu()) {
             Bld.test(ev.plyer.player.getLocation().clone().add(0, -1, 0), Material.AIR);
+        } else if (M.matches(ev.item, Menu.staff)) {
+            if (this.spellCast == null){
+                this.spellCast = new SpellCast(ev.plyer);
+            }
+            this.spellCast.cast();
         }
 
         if (this.arenaGame != null){
