@@ -7,10 +7,11 @@ import noppe.minecraft.arena.event.events.EventInventoryClick;
 import noppe.minecraft.arena.event.events.EventPlayerInteract;
 import noppe.minecraft.arena.helpers.M;
 import noppe.minecraft.arena.item.Inv;
-import noppe.minecraft.arena.item.InvView;
+import noppe.minecraft.arena.view.InvViews;
 import noppe.minecraft.arena.item.Menu;
 import noppe.minecraft.arena.item.Upgr;
 import noppe.minecraft.arena.location.Loc;
+import noppe.minecraft.arena.view.views.SoulShop;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -104,19 +105,9 @@ public class ArenaGame extends ArenaEventListener {
             this.startWave();
         }
         else if (M.matches(ev.item, Menu.soulShop) && ev.plyer.useMenu()){
-            ev.plyer.player.openInventory(InvView.getSoulShop(ev.plyer));
+            new SoulShop(ev.plyer);
         }
     }
-
-    @Override
-    public void onInventoryClick(InventoryClickEvent event, EventInventoryClick ev){
-        if (ev.itemClicked == null){
-            return;
-        } else if (M.matches(ev.itemClicked, Upgr.getHealthIncrease(ev.plyer))) {
-            ev.plyer.buyHealthIncrease();
-        }
-    }
-
 
     public void collectSouls(int souls){
         this.souls += souls;

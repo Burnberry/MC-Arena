@@ -1,11 +1,16 @@
 package noppe.minecraft.arena.entities;
 
 import noppe.minecraft.arena.event.ArenaEventListener;
+import noppe.minecraft.arena.event.events.EventInventoryClick;
 import noppe.minecraft.arena.helpers.M;
+import noppe.minecraft.arena.item.Menu;
 import noppe.minecraft.arena.location.Loc;
+import noppe.minecraft.arena.view.View;
+import noppe.minecraft.arena.view.views.SoulShop;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
 import java.util.Objects;
 
@@ -14,6 +19,7 @@ public class Plyer extends Ent{
     public int souls;
     private final int menuUseCooldown = 10;
     public int lastMenuUseTime = -menuUseCooldown;
+    public View view;
 
     // upgrades
     int healthIncreaseLevel;
@@ -23,7 +29,7 @@ public class Plyer extends Ent{
         M.setOrigin(player, origin);
         this.type = "player";
         this.player = player;
-        this.souls = 0;
+        this.souls = 20;
 
         // upgrades
         this.healthIncreaseLevel = 0;
@@ -94,5 +100,20 @@ public class Plyer extends Ent{
 
     public void setRespawnLocation(Location location){
         this.player.setRespawnLocation(location);
+    }
+
+    public boolean canMoveItems(){
+        return (this.view == null);
+    }
+
+    public void onInventoryClick(InventoryClickEvent event, EventInventoryClick ev){
+        if (this.view != null){
+            M.print(this.view.toString());
+            this.view.onInventoryClick(event, ev);
+        }
+        if (M.matches(ev.itemClicked, Menu.soulShop)){
+            this.view = new SoulShop(this);
+            M.print(this.view.toString());
+        }
     }
 }

@@ -1,6 +1,7 @@
 package noppe.minecraft.arena.event.mappers;
 
 import noppe.minecraft.arena.event.events.EventInventoryClick;
+import noppe.minecraft.arena.helpers.M;
 import noppe.minecraft.arena.mcarena.ArenaPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,6 +14,7 @@ public class MapperOnInventoryClick extends ArenaEventMapper implements Listener
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event){
-        this.arenaPlugin.arena.onInventoryClick(event, new EventInventoryClick(event));
+        EventInventoryClick ev =  new EventInventoryClick(event);
+        ev.plyer.onInventoryClick(event, ev);
     }
 }
