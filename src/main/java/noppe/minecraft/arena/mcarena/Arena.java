@@ -10,11 +10,11 @@ import noppe.minecraft.arena.helpers.M;
 import noppe.minecraft.arena.item.Inv;
 import noppe.minecraft.arena.item.Menu;
 import noppe.minecraft.arena.location.Loc;
-import noppe.minecraft.arena.spell.SpellCast;
+import noppe.minecraft.arena.spellcasting.S;
+import noppe.minecraft.arena.spellcasting.SpellCast;
+import noppe.minecraft.arena.spellcasting.Spells;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -59,24 +59,29 @@ public class Arena extends ArenaEventListener {
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, EventPlayerInteract ev){
-        if (!ev.rightClick){
-            this.spellCast = null;
+        if (!ev.rightClick && this.spellCast != null){
+//            M.print("Cast");
+            this.spellCast.cast();
+            if (this.spellCast.state == SpellCast.State.CAST)
+                this.spellCast = null;
             return;
         }
+
         if (M.matches(ev.item, Menu.StartGame) && ev.plyer.useMenu()){
             if (this.arenaGame == null){
                 this.arenaGame = new ArenaGame(this);
             }
             this.arenaGame.onPlayerJoin(ev.plyer);
         } else if (M.matches(ev.item, Menu.build) && ev.plyer.useMenu()) {
-            Bld.test(ev.plyer.player.getLocation().clone().add(0, -1, 0), Material.STONE);
+            Spells.compareAll();
+            //            Bld.test(ev.plyer.player.getLocation().clone().add(0, -1, 0), Material.STONE);
         } else if (M.matches(ev.item, Menu.erase) && ev.plyer.useMenu()) {
-            Bld.test(ev.plyer.player.getLocation().clone().add(0, -1, 0), Material.AIR);
+//            Bld.test(ev.plyer.player.getLocation().clone().add(0, -1, 0), Material.AIR);
         } else if (M.matches(ev.item, Menu.staff)) {
             if (this.spellCast == null){
                 this.spellCast = new SpellCast(ev.plyer);
             }
-            this.spellCast.cast();
+            this.spellCast.castNode();
         }
 
         if (this.arenaGame != null){
