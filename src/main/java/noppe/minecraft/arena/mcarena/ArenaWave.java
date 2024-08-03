@@ -3,6 +3,7 @@ package noppe.minecraft.arena.mcarena;
 import noppe.minecraft.arena.builder.Bld;
 import noppe.minecraft.arena.entities.Enmy;
 import noppe.minecraft.arena.entities.Plyer;
+import noppe.minecraft.arena.entities.monsters.ArenaSkeleton;
 import noppe.minecraft.arena.entities.monsters.ArenaZombie;
 import noppe.minecraft.arena.event.ArenaEventListener;
 import noppe.minecraft.arena.event.events.EventEntityDeath;
@@ -43,7 +44,7 @@ public class ArenaWave extends ArenaEventListener {
             plyer.player.setGameMode(GameMode.ADVENTURE);
         }
         this.rounds = 2;
-        this.roundSize = 3;
+        this.roundSize = 1;
     }
 
     public void onRemove(){
@@ -54,6 +55,9 @@ public class ArenaWave extends ArenaEventListener {
 
     public void onTick(){
         this.ticks += 1;
+        for (Enmy enmy: this.monsters){
+            enmy.onTick();
+        }
         if (this.monsters.isEmpty()){
             if (this.rounds > 0){
                 this.startRound();
@@ -73,8 +77,8 @@ public class ArenaWave extends ArenaEventListener {
 
     private void spawnMonster(){
         Location location = this.getMonsterSpawnLocation();
-        ArenaZombie zombie = new ArenaZombie(this, location);
-        this.monsters.add(zombie);
+        Enmy enmy = new ArenaSkeleton(this, location);
+        this.monsters.add(enmy);
     }
 
     private Location getMonsterSpawnLocation(){

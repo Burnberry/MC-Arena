@@ -27,6 +27,7 @@ public class ArenaEventHandler {
         // entity events
         this.arenaEventMappers.add(new MapperOnEntityDeath(this.arena));
         this.arenaEventMappers.add(new MapperOnEntityRemove(this.arena));
+        this.arenaEventMappers.add(new MapperOnEntityDamage(this.arena));
 
         this.registerEvents();
     }

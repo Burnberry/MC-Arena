@@ -1,8 +1,10 @@
 package noppe.minecraft.arena.entities;
 
 import noppe.minecraft.arena.event.ArenaEventListener;
+import noppe.minecraft.arena.event.events.EventEntityDamage;
 import noppe.minecraft.arena.helpers.M;
 import org.bukkit.entity.Entity;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 public class Ent {
     public String type;
@@ -26,4 +28,8 @@ public class Ent {
     public Boolean isPlayer(){
         return false;
     }
+
+    public void onTick(){}
+
+    public void onEntityDamage(EntityDamageEvent event, EventEntityDamage ev){}
 }
