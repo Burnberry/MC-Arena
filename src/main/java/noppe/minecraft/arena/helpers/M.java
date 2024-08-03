@@ -5,6 +5,7 @@ import noppe.minecraft.arena.entities.Plyer;
 import noppe.minecraft.arena.event.ArenaEventListener;
 import noppe.minecraft.arena.mcarena.ArenaPlugin;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.damage.DamageSource;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,6 +43,29 @@ public class M {
             return null;
         }
         return block.getMetadata(key).getFirst().value();
+    }
+
+    public static void setItemNBTName(ItemStack itemstack, String name){
+        ItemMeta itemMeta = itemstack.getItemMeta();
+        itemMeta.getPersistentDataContainer().set(Key.name, PersistentDataType.STRING, name);
+        itemstack.setItemMeta(itemMeta);
+    }
+
+    public static String getItemNBTName(ItemStack itemstack){
+        if (!itemstack.getItemMeta().getPersistentDataContainer().has(Key.name, PersistentDataType.STRING)){
+            return "empty";
+        }
+        return itemstack.getItemMeta().getPersistentDataContainer().get(Key.name, PersistentDataType.STRING);
+    }
+
+    public static void setItemNBTTag(ItemStack itemstack, NamespacedKey key){
+        ItemMeta itemMeta = itemstack.getItemMeta();
+        itemMeta.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, true);
+        itemstack.setItemMeta(itemMeta);
+    }
+
+    public static boolean getItemNBTTag(ItemStack itemstack, NamespacedKey key){
+        return itemstack.getItemMeta().getPersistentDataContainer().has(key, PersistentDataType.BOOLEAN);
     }
 
     public static void setOrigin(Player player, ArenaEventListener origin) {
@@ -83,20 +108,20 @@ public class M {
     public static String getLore(ItemStack item){
         ItemMeta itemMeta = item.getItemMeta();
         if (itemMeta == null){
-            return "Empty";
+            return "empty";
         }
         List<String> lore = itemMeta.getLore();
         if (lore == null){
-            return "Empty";
+            return "empty";
         }
         if (itemMeta.getLore().isEmpty()){
-            return "Empty";
+            return "empty";
         }
         return itemMeta.getLore().getFirst();
     }
 
     public static Boolean matches(ItemStack item1, ItemStack item2){
-        return (!M.getLore(item1).equals("Empty") && M.getLore(item1).equals(M.getLore(item2)));
+        return (!M.getItemNBTName(item1).equals("empty") && M.getItemNBTName(item1).equals(M.getItemNBTName(item2)));
     }
 
     public static Plyer getPlayerFromDamageSource(Ent ent, EntityDeathEvent event){

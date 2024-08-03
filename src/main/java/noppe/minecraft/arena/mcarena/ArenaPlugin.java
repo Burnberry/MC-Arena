@@ -1,6 +1,7 @@
 package noppe.minecraft.arena.mcarena;
 
 import noppe.minecraft.arena.event.ArenaEventHandler;
+import noppe.minecraft.arena.helpers.Key;
 import noppe.minecraft.arena.helpers.M;
 import noppe.minecraft.arena.settings.DefaultGameRules;
 import org.bukkit.GameRule;
@@ -24,6 +25,7 @@ public final class ArenaPlugin extends JavaPlugin implements Listener {
 
     public void reloadPlugin(){
         M.arenaPlugin = this;
+        Key.setArenaPlugin(this);
         this.arena = new Arena(this);
         this.arena.load();
     }

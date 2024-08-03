@@ -1,6 +1,7 @@
 package noppe.minecraft.arena.item;
 
 import noppe.minecraft.arena.entities.Plyer;
+import noppe.minecraft.arena.helpers.Key;
 import noppe.minecraft.arena.helpers.M;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -10,7 +11,7 @@ public class Upgr {
     public static ItemStack getHealthIncrease(Plyer plyer) {
         ItemStack itemStack = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
         M.setItemName(itemStack, "Increase Health: " + plyer.getHealthIncreaseCost() + " Souls");
-        M.setLore(itemStack, "healthIncrease");
+        M.setItemNBTName(itemStack, "healthIncrease");
         return itemStack;
     }
 
