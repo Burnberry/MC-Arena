@@ -3,7 +3,7 @@ package noppe.minecraft.arena.entities.spawn;
 import noppe.minecraft.arena.entities.Enmy;
 import noppe.minecraft.arena.entities.monsters.MS;
 import noppe.minecraft.arena.helpers.M;
-import noppe.minecraft.arena.mcarena.ArenaWave;
+import noppe.minecraft.arena.mcarena.Wave.Wave;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -11,14 +11,14 @@ import org.bukkit.util.Vector;
 
 public class MonsterSpawn {
     public int ticks = 0;
-    ArenaWave arenaWave;
+    Wave wave;
     Location location;
     MS.Type type;
     int delay = 0;
 
-    public MonsterSpawn(ArenaWave arenaWave, Location location, int delay, MS.Type type){
+    public MonsterSpawn(Wave wave, Location location, int delay, MS.Type type){
         this.location = location;
-        this.arenaWave = arenaWave;
+        this.wave = wave;
         this.delay = delay;
         this.type = type;
     }
@@ -47,6 +47,6 @@ public class MonsterSpawn {
     }
 
     public Enmy spawn(){
-        return MS.spawnMonster(this.arenaWave, this.location, this.type);
+        return MS.spawnMonster(this.wave, this.location, this.type);
     }
 }

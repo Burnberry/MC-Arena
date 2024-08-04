@@ -57,4 +57,23 @@ public class Bld {
         Bld.platform(location.clone().add(0, height, 0), ceiling, length, width);
         location.getBlock().getRelative(0, -1, 0).setType(Material.OCHRE_FROGLIGHT);
     }
+
+    public static void colosseum(Location location){
+        int length = 20;
+        int height = 10;
+        Bld.boxHome(location, Material.SANDSTONE, Material.CHISELED_RED_SANDSTONE, Material.TINTED_GLASS, length, length, height);
+        Bld.lightGrid(location, 4, length, length, Material.OCHRE_FROGLIGHT);
+    }
+
+    public static void lightGrid(Location location, int offset, int length, int width, Material light){
+        Block block = location.getBlock().getRelative(0, -1, 0);
+        for (int x=0; x<=length; x += offset+1){
+            for (int y=0; y<=width; y += offset+1){
+                block.getRelative(x, 0, y).setType(light);
+                block.getRelative(x, 0, -y).setType(light);
+                block.getRelative(-x, 0, y).setType(light);
+                block.getRelative(-x, 0, -y).setType(light);
+            }
+        }
+    }
 }

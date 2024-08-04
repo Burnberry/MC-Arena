@@ -11,6 +11,7 @@ public class Loc {
     public static Location spawn;
     public static Location arenaLobby;
     public static Location waveArena;
+    public static Location colosseum;
 
 
     public static void setArena(Arena arena){
@@ -20,5 +21,6 @@ public class Loc {
         Loc.spawn = new Location(Loc.world, 0.5, 100, 0.5);
         Loc.arenaLobby = new Location(Loc.world, 0.5, 95, 20.5);
         Loc.waveArena = new Location(Loc.world, 20.5, 100, 0.5);
+        Loc.colosseum = new Location(Loc.world, 50.5, 100, 50.5);
     }
 }

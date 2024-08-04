@@ -10,6 +10,7 @@ import noppe.minecraft.arena.helpers.M;
 import noppe.minecraft.arena.item.Inv;
 import noppe.minecraft.arena.item.Menu;
 import noppe.minecraft.arena.location.Loc;
+import noppe.minecraft.arena.mcarena.colosseum.Colosseum;
 import noppe.minecraft.arena.spellcasting.S;
 import noppe.minecraft.arena.spellcasting.SpellCast;
 import noppe.minecraft.arena.spellcasting.Spells;
@@ -25,7 +26,8 @@ import java.util.List;
 
 public class Arena extends ArenaEventListener {
     public ArenaPlugin arenaPlugin;
-    public ArenaGame arenaGame;
+//    public ArenaGame arenaGame;
+    public Colosseum colosseum;
     public int ticks;
     public List<Plyer> players;
     public SpellCast spellCast;
@@ -49,8 +51,8 @@ public class Arena extends ArenaEventListener {
 
     public void onTick(){
         this.ticks += 1;
-        if (this.arenaGame != null){
-            this.arenaGame.onTick();
+        if (this.colosseum != null){
+            this.colosseum.onTick();
         }
         if (this.spellCast != null){
             this.spellCast.onTick();
@@ -68,10 +70,10 @@ public class Arena extends ArenaEventListener {
         }
 
         if (M.matches(ev.item, Menu.StartGame) && ev.plyer.useMenu()){
-            if (this.arenaGame == null){
-                this.arenaGame = new ArenaGame(this);
+            if (this.colosseum == null){
+                this.colosseum = new Colosseum(this);
             }
-            this.arenaGame.onPlayerJoin(ev.plyer);
+            this.colosseum.onPlayerJoin(ev.plyer);
         } else if (M.matches(ev.item, Menu.build) && ev.plyer.useMenu()) {
             Spells.compareAll();
             //            Bld.test(ev.plyer.player.getLocation().clone().add(0, -1, 0), Material.STONE);
@@ -84,8 +86,8 @@ public class Arena extends ArenaEventListener {
             this.spellCast.castNode();
         }
 
-        if (this.arenaGame != null){
-            this.arenaGame.onPlayerInteract(event, ev);
+        if (this.colosseum != null){
+            this.colosseum.onPlayerInteract(event, ev);
         }
     }
 
@@ -112,10 +114,10 @@ public class Arena extends ArenaEventListener {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event, EventInventoryClick ev){
-        if (ev.itemClicked == null || this.arenaGame == null){
+        if (ev.itemClicked == null || this.colosseum == null){
             return;
         } else {
-            this.arenaGame.onInventoryClick(event, ev);
+            this.colosseum.onInventoryClick(event, ev);
         }
     }
 
