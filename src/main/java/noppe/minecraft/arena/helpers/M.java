@@ -6,6 +6,7 @@ import noppe.minecraft.arena.event.ArenaEventListener;
 import noppe.minecraft.arena.mcarena.ArenaPlugin;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.damage.DamageSource;
@@ -148,6 +149,10 @@ public class M {
 
     public static World getWorld(){
         return M.arenaPlugin.getServer().getWorld("world");
+    }
+
+    public static void playSound(Location location, Sound sound){
+        M.getWorld().playSound(location, sound, 10, 1);
     }
 
     public static int getTicks(){
