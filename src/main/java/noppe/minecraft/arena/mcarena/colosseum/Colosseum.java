@@ -49,6 +49,9 @@ public class Colosseum extends ArenaEventListener {
         if (this.wave != null) {
             this.wave.onTick();
         }
+        for (Plyer plyer: this.players){
+            plyer.onTick();
+        }
     }
 
     public void onPlayerJoin(Plyer plyer){

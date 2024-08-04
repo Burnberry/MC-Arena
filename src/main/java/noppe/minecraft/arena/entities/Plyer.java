@@ -16,7 +16,10 @@ import java.util.Objects;
 
 public class Plyer extends Ent{
     public Player player;
-    public int souls;
+    public int souls = 0;
+    public double maxMana = 3;
+    public double mana = maxMana;
+    public int airManaDisplay = 0;
     private final int menuUseCooldown = 10;
     public int lastMenuUseTime = -menuUseCooldown;
     public View view;
@@ -35,7 +38,16 @@ public class Plyer extends Ent{
         this.healthIncreaseLevel = 0;
 
         this.fullHeal();
+        this.updateAirManaDisplay();
         this.setRespawnLocation(Loc.spawn);
+
+        M.print(""+player.getMaximumAir());
+        player.setMaximumAir(300);
+    }
+
+    public void onTick(){
+        player.setRemainingAir(airManaDisplay);
+//        player.setRemainingAir((int)(mana*3) - 25);
     }
 
     public boolean useMenu(){
@@ -58,6 +70,16 @@ public class Plyer extends Ent{
         health += this.player.getHealth();
         health = Math.min(health, this.getMaxHealth());
         this.player.setHealth(health);
+    }
+
+    public void addMana(double addedMana){
+        mana += addedMana;
+        mana = Math.min(Math.max(mana, 0.0), maxMana);
+        this.updateAirManaDisplay();
+    }
+
+    public void updateAirManaDisplay(){
+        airManaDisplay = (int)(mana)*30 - 25;
     }
 
     public Boolean isPlayer(){

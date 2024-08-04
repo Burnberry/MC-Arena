@@ -140,6 +140,7 @@ public class Wave extends ArenaEventListener {
                 }
                 if (killer != null){
                     killer.souls += souls;
+                    killer.addMana(1);
                     M.print(killer.getName() + " killed " + enemy.enemy.getName() + " + " + souls +  " souls | total: " + killer.souls);
                 }
             }
