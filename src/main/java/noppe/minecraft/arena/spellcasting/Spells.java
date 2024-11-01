@@ -1,20 +1,25 @@
 package noppe.minecraft.arena.spellcasting;
 
 import noppe.minecraft.arena.helpers.M;
-import noppe.minecraft.arena.spellcasting.spells.FourSpell;
-import noppe.minecraft.arena.spellcasting.spells.NSpell;
-import noppe.minecraft.arena.spellcasting.spells.USpell;
-import noppe.minecraft.arena.spellcasting.spells.ZSpell;
+import noppe.minecraft.arena.spellcasting.playerSpells.FailedSummon;
+import noppe.minecraft.arena.spellcasting.spells.*;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class Spells {
     public static List<Spell> test = Arrays.asList(
-            new FourSpell(),
-            new NSpell(),
-            new USpell(),
-            new ZSpell()
+            new HealSpell(),
+            new FireballSpell(),
+            new ChainLightningSpell()
+//            new FourSpell(),
+//            new NSpell(),
+//            new USpell(),
+//            new ZSpell()
+    );
+
+    public static List<Spell> test6 = Arrays.asList(
+            new FailedSummonSpell()
     );
 
     public static void compareAll(){

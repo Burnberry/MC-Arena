@@ -29,7 +29,7 @@ public class Wave extends ArenaEventListener {
 
     int ticks = 0;
     public List<Plyer> players = new ArrayList<>();
-    List<Enmy> monsters = new ArrayList<>();
+    public List<Enmy> monsters = new ArrayList<>();
     List<MonsterSpawn> monsterSpawns = new ArrayList<>();
     int rounds;
     int roundSize;

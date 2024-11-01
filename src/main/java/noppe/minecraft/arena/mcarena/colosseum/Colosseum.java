@@ -26,7 +26,7 @@ public class Colosseum extends ArenaEventListener {
     public List<Plyer> players = new ArrayList<>();
     int ticks = 0;
     int waves = 0;
-    Wave wave;
+    public Wave wave;
     BattleState battleState = BattleState.START;
 
     public Colosseum(Arena arena){
@@ -49,9 +49,9 @@ public class Colosseum extends ArenaEventListener {
         if (this.wave != null) {
             this.wave.onTick();
         }
-        for (Plyer plyer: this.players){
-            plyer.onTick();
-        }
+//        for (Plyer plyer: this.players){
+//            plyer.onTick();
+//        }
     }
 
     public void onPlayerJoin(Plyer plyer){
@@ -59,6 +59,8 @@ public class Colosseum extends ArenaEventListener {
         this.onPlayerTeleport(plyer);
         plyer.setRespawnLocation(Loc.colosseum);
         M.print("player joined colosseum");
+
+        plyer.colosseum = this;
     }
 
     public void onPlayerTeleport(Plyer plyer){

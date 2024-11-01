@@ -1,12 +1,14 @@
 package noppe.minecraft.arena.spellcasting;
 
 import noppe.minecraft.arena.helpers.M;
+import noppe.minecraft.arena.helpers.R;
 import org.apache.commons.math3.linear.*;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
 
 public class S {
     // Feel free to use these functions but be warned if you want to edit them
@@ -196,4 +198,29 @@ public class S {
 //        double e = S.similarityError(Hor, Vert);
 //        M.print(""+e);
 //    }
+
+    public static long performanceTest(int nodes, int n){
+        List<Vector> Points = new ArrayList<>();
+        List<Vector> Points2 = new ArrayList<>();
+
+        for (int i=0; i<nodes; i++){
+            Points.add(new Vector(R.rand.nextDouble(), R.rand.nextDouble(), R.rand.nextDouble()));
+            Points2.add(new Vector(R.rand.nextDouble(), R.rand.nextDouble(), R.rand.nextDouble()));
+        }
+
+        long start = System.currentTimeMillis();
+        for (int i=0; i<n; i++){
+            similarityError(Points, Points2);
+        }
+
+        return System.currentTimeMillis() - start;
+    }
+
+    public static void runTests(){
+        int n = 1000*1000;
+        M.print("Number of iterations: " + n);
+        M.print("ms: " + S.performanceTest(4, n) + " nodes:" + 4);
+        M.print("ms: " + S.performanceTest(40, n) + " nodes:" + 40);
+        M.print("ms: " + S.performanceTest(400, n) + " nodes:" + 400);
+    }
 }

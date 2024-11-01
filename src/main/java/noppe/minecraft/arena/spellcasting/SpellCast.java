@@ -46,6 +46,9 @@ public class SpellCast {
         if (this.state != State.CAST){
             this.spawnParticles();
         }
+        if (state == State.CAST && plyer.spellCast == this){
+            plyer.spellCast = null;
+        }
     }
 
     public void castNode(){
@@ -69,46 +72,46 @@ public class SpellCast {
         this.points.add(playerVec.clone().multiply(1/dot).subtract(this.norm).multiply(this.scale));
         playerVec.subtract(this.norm);
         this.plyer.player.playSound(this.plyer.player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+        drawLine();
     }
 
     public void spawnParticles(){
         Location location = this.plyer.player.getEyeLocation().clone().add(this.norm.clone().multiply(this.scale));
-        List<Vector> particlePoints;
-        if (this.state == State.CASTING){
-            particlePoints = this.points;
-        }
-        else {
-            particlePoints = this.linePoints;
-        }
-        for (Vector point: particlePoints){
+        for (Vector point: linePoints){
             this.plyer.player.spawnParticle(Particle.ELECTRIC_SPARK , location.clone().add(point), 0, 0, 0, 0, 0);
         }
     }
 
     public void cast(){
-        if (this.state == State.CASTING){
-            this.state = State.CHARGING;
-            if (this.points.size() == 4){
-                List<Vector> newPoints = C.clone(this.points);
-                S.projectPointsXY(newPoints, this.norm.clone().crossProduct(S.unitY));
-                Spell bestSpell = null;
-                double minError = 1;
-                for (Spell spell: Spells.test){
-                    double error = S.similarityError(spell, newPoints);
+        List<Spell> spells = getPotentialSpells();
+        if (spells != null){
+            List<Vector> newPoints = C.clone(this.points);
+            S.projectPointsXY(newPoints, this.norm.clone().crossProduct(S.unitY));
+            Spell bestSpell = null;
+            double minError = 1;
+            for (Spell spell: spells){
+                double error = S.similarityError(spell, newPoints);
 //                    M.print(spell.getName() + " error: " + error);
-                    if (error < minError){
-                        minError = error;
-                        bestSpell = spell;
-                    }
+                if (error < minError){
+                    minError = error;
+                    bestSpell = spell;
                 }
-                bestSpell.cast(this.plyer);
-                this.replacePoints(bestSpell);
             }
+            bestSpell.cast(this.plyer);
         }
-        else {
-            this.state = State.CAST;
-            this.linePoints.clear();
+        linePoints.clear();
+        if (plyer.spellCast == this){
+            plyer.spellCast = null;
         }
+    }
+
+    private List<Spell> getPotentialSpells() {
+        if (points.size() == 5){
+            return Spells.test;
+        } else if (points.size() == 6) {
+            return Spells.test6;
+        }
+        return null;
     }
 
     private void charge(){
@@ -122,12 +125,11 @@ public class SpellCast {
     private void drawLine(){
         this.plyer.player.playSound(this.plyer.player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
         Vector P0 = this.points.get(this.pointsConnected).clone();
-        Vector P1 = this.points.get(this.pointsConnected+1).clone();
-
         if (this.linePoints.isEmpty()){
             this.linePoints.add(P0.clone());
             return;
         }
+        Vector P1 = this.points.get(this.pointsConnected+1).clone();
 
         int jumps = (int)(P0.distance(P1)/0.2);
 //        M.print("jumps: "+jumps);

@@ -22,6 +22,8 @@ public class MapperOnPlayerInteract extends ArenaEventMapper implements Listener
         if (listener == null || ent == null){
             return;
         }
-        listener.onPlayerInteract(event, new EventPlayerInteract(event));
+        EventPlayerInteract ev = new EventPlayerInteract(event);
+        listener.onPlayerInteract(event, ev);
+        ev.plyer.onPlayerInteract(event, ev);
     }
 }

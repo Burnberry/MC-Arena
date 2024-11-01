@@ -2,16 +2,24 @@ package noppe.minecraft.arena.entities;
 
 import noppe.minecraft.arena.event.ArenaEventListener;
 import noppe.minecraft.arena.event.events.EventInventoryClick;
+import noppe.minecraft.arena.event.events.EventPlayerInteract;
 import noppe.minecraft.arena.helpers.M;
 import noppe.minecraft.arena.item.Menu;
 import noppe.minecraft.arena.location.Loc;
+import noppe.minecraft.arena.mcarena.colosseum.Colosseum;
+import noppe.minecraft.arena.spellcasting.PlayerSpell;
+import noppe.minecraft.arena.spellcasting.S;
+import noppe.minecraft.arena.spellcasting.SpellCast;
 import noppe.minecraft.arena.view.View;
 import noppe.minecraft.arena.view.views.SoulShop;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Plyer extends Ent{
@@ -23,6 +31,10 @@ public class Plyer extends Ent{
     private final int menuUseCooldown = 10;
     public int lastMenuUseTime = -menuUseCooldown;
     public View view;
+    public SpellCast spellCast;
+    public PlayerSpell playerSpell;
+
+    public Colosseum colosseum;
 
     // upgrades
     int healthIncreaseLevel;
@@ -46,6 +58,12 @@ public class Plyer extends Ent{
     }
 
     public void onTick(){
+        if (spellCast != null){
+            spellCast.onTick();
+        }
+        if (playerSpell != null){
+            playerSpell.onTick();
+        }
         player.setRemainingAir(airManaDisplay);
 //        player.setRemainingAir((int)(mana*3) - 25);
     }
@@ -130,12 +148,32 @@ public class Plyer extends Ent{
 
     public void onInventoryClick(InventoryClickEvent event, EventInventoryClick ev){
         if (this.view != null){
-            M.print(this.view.toString());
             this.view.onInventoryClick(event, ev);
         }
         if (M.matches(ev.itemClicked, Menu.soulShop)){
             this.view = new SoulShop(this);
-            M.print(this.view.toString());
         }
+    }
+
+    public void onPlayerInteract(PlayerInteractEvent event, EventPlayerInteract ev){
+        if (ev.rightClick && M.matches(ev.item, Menu.staff)){
+            if (spellCast == null){
+                spellCast = new SpellCast(this);
+            }
+            spellCast.castNode();
+        }
+        if (!ev.rightClick && this.spellCast != null){
+            spellCast.cast();
+        }
+//        if (!ev.rightClick){
+//            S.runTests();
+//        }
+    }
+
+    public List<Enmy> getEnemies(){
+        if (colosseum != null && colosseum.wave != null){
+            return colosseum.wave.monsters;
+        }
+        return new ArrayList<>();
     }
 }

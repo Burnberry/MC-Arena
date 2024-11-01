@@ -22,6 +22,7 @@ public class Inv {
     static Inventory createGame(){
         Inventory inventory = Bukkit.createInventory(null, InventoryType.PLAYER, "Inventory");
         inventory.setItem(0, Gear.knife);
+        inventory.setItem(1, Menu.staff);
         inventory.setItem(4, Menu.soulShop);
         inventory.setItem(8, Menu.startWave);
         return inventory;

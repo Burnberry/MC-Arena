@@ -54,20 +54,23 @@ public class Arena extends ArenaEventListener {
         if (this.colosseum != null){
             this.colosseum.onTick();
         }
-        if (this.spellCast != null){
-            this.spellCast.onTick();
+        for (Plyer plyer: players){
+            plyer.onTick();
         }
+//        if (this.spellCast != null){
+//            this.spellCast.onTick();
+//        }
     }
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, EventPlayerInteract ev){
-        if (!ev.rightClick && this.spellCast != null){
-//            M.print("Cast");
-            this.spellCast.cast();
-            if (this.spellCast.state == SpellCast.State.CAST)
-                this.spellCast = null;
-            return;
-        }
+//        if (!ev.rightClick && this.spellCast != null){
+////            M.print("Cast");
+//            this.spellCast.cast();
+//            if (this.spellCast.state == SpellCast.State.CAST)
+//                this.spellCast = null;
+//            return;
+//        }
 
         if (M.matches(ev.item, Menu.StartGame) && ev.plyer.useMenu()){
             if (this.colosseum == null){
@@ -79,12 +82,13 @@ public class Arena extends ArenaEventListener {
             //            Bld.test(ev.plyer.player.getLocation().clone().add(0, -1, 0), Material.STONE);
         } else if (M.matches(ev.item, Menu.erase) && ev.plyer.useMenu()) {
 //            Bld.test(ev.plyer.player.getLocation().clone().add(0, -1, 0), Material.AIR);
-        } else if (M.matches(ev.item, Menu.staff)) {
-            if (this.spellCast == null){
-                this.spellCast = new SpellCast(ev.plyer);
-            }
-            this.spellCast.castNode();
         }
+//        else if (M.matches(ev.item, Menu.staff)) {
+//            if (this.spellCast == null){
+//                this.spellCast = new SpellCast(ev.plyer);
+//            }
+//            this.spellCast.castNode();
+//        }
 
         if (this.colosseum != null){
             this.colosseum.onPlayerInteract(event, ev);

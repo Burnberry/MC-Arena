@@ -18,7 +18,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -162,5 +164,15 @@ public class M {
     public static void print(String message){
         M.arenaPlugin.print(message);
         System.out.println(message);
+    }
+
+    public static List<Vector> pentagram(){
+        List<Vector> penta = new ArrayList<>();
+        int n = 5;
+        double a = Math.PI*2*(2.0/n);
+        for (int i=0; i<=n; i++){
+            penta.add(new Vector(Math.sin(a*i), Math.cos(a*i)-1, 0));
+        }
+        return penta;
     }
 }
